@@ -1,0 +1,42 @@
+"""
+获得了一个未分割为测试验证数据集的整体数据集
+将他们拷贝一份，得到：两个相同的图片文件夹
+
+将他们按照比例（指定比例）
+删除图片，保留需要的比例的图片
+从而形成互补的图片文件夹
+
+比如按照4:1的比例分割文件夹
+那么两个相同的图片文件夹，将一个删除最后的1/5
+一个删除开始的4/5
+最后形成互补的train/val图片数据集
+"""
+
+import glob
+import pathlib
+import os
+import math
+
+# 数据集里同时有图片和label，先取出所有存储图片的文件的路径
+files_path = glob.glob(r"G:\Bi-SRNet-differenceSiam\datasets\SECOND_train_set_4_1_split\train\*")
+
+# 设定路径
+train = 4
+test = 1
+all = train + test
+
+
+# 对每一个路径进行遍历，执行相同的删除操作
+for path in files_path:
+    images_path = glob.glob(os.path.join(path, "*.png"))
+
+    all_files = len(images_path)
+    
+    # 如果是train，应当是for file in images_path[math.floor(all_files * (train / all)) + 1:]:
+    # 表示删除最后的数据，这里采取向下取整，也可以采取向上取整。只要保证列表索引里的为整数即可
+    # 如果是test，应当是for file in images_path[math.floor(:all_files * (train / all))]:
+    # 表示删除所有前面的数据
+    for file in images_path[math.floor(all_files * (train / all)):]:
+        os.remove(file)
+    images_path = glob.glob(os.path.join(path, "*.png"))
+    print(len(images_path))

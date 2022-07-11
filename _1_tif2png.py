@@ -18,8 +18,9 @@ for imageName in os.listdir(imagesDirectory):
     # image = Image.open(imagePath)  # 打开tiff图像
 
     # print(re.split("[\\\ ,.]", imagePath))
-
-    img = cv.imread(imagePath, 1)
+    
+    # cv.imread()读取图片有几种模式，此处以-1的模式读取
+    img = cv.imread(imagePath, -1)
 
     # print(img.shape)
     # img = Image.fromarray(np.uint8(img))
